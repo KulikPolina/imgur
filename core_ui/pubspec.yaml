@@ -1,0 +1,26 @@
+name: core_ui
+version: 0.0.1
+publish_to: none
+description: Project Core UI module
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  core:
+    path: ../core
+  domain:
+    path: ../domain
+
+  flutter_svg: ^2.0.9
+  shimmer: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

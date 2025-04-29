@@ -1,0 +1,29 @@
+name: search_images
+description: Home feature
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  core:
+    path: ../../core
+  domain:
+    path: ../../domain
+  core_ui:
+    path: ../../core_ui
+  navigation:
+    path: ../../navigation
+  flutter_debouncer: 2.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  auto_route_generator: ^7.3.2
+  build_runner: ^2.4.8

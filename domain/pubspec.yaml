@@ -1,0 +1,20 @@
+name: domain
+version: 0.0.1
+publish_to: none
+description: Project domain module
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  core:
+    path: ../core
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  build_runner: ^2.4.8

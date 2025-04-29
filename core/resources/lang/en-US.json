@@ -1,0 +1,19 @@
+{
+  "common": {
+    "example_key": "Example Value"
+  },
+  "titles": {
+    "images": "Images",
+    "favourites": "Favourites"
+  },
+  "empty": {
+    "favourites": "You don't have any favourite item"
+  },
+  "action":{
+    "go_to_images": "Go to images"
+  },
+  "error": {
+    "generic": "Something went wrong",
+    "try_again": "Try again"
+  }
+}

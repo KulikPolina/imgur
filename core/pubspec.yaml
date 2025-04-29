@@ -1,0 +1,33 @@
+name: core
+version: 0.0.1
+publish_to: none
+description: Project core module
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  get_it: ^7.6.7
+  dio: ^5.4.0
+  logger: ^2.0.2
+  flutter_bloc: ^8.1.4
+  observe_internet_connectivity: ^1.0.2
+  http: ^1.2.1
+  easy_localization: ^3.0.7
+  cached_network_image: ^3.4.1
+  sqflite: ^2.3.3+2
+  equatable: ^2.0.5
+  shared_preferences: ^2.3.2
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - resources/lang/
