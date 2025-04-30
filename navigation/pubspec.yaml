@@ -23,6 +23,8 @@ dependencies:
     path: ../features/main
   search_images:
     path: ../features/search_images
+  auth:
+    path: ../features/auth
 
   auto_route: ^7.8.4
 

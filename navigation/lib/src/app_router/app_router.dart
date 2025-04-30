@@ -1,3 +1,4 @@
+import 'package:auth/auth.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:favourites/favourites.dart';
 import 'package:image_details/image_details.dart';
@@ -15,6 +16,7 @@ part 'app_router.gr.dart';
     ImagesModule,
     ImageDetailsModule,
     SearchImagesModule,
+    AuthModule,
   ],
 )
 class AppRouter extends _$AppRouter {
@@ -38,6 +40,12 @@ class AppRouter extends _$AppRouter {
         ),
         AutoRoute(
           page: SearchImagesRoute.page,
+        ),
+        AutoRoute(
+          page: LoginScreen.page,
+        ),
+        AutoRoute(
+          page: SignUpScreen.page,
         ),
       ];
 }

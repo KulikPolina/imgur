@@ -11,7 +11,6 @@ import 'error_handler/provider/app_error_handler_provider.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  
   await _setupDI(Flavor.dev);
 
   runApp(const App());
@@ -23,6 +22,7 @@ Future<void> _setupDI(Flavor flavor) async {
     init: (_) async {
       AppDI.initDependencies(appLocator, flavor);
       await DataDI.initDependencies(appLocator);
+      await AuthDI.initDependencies(appLocator, provider: ProviderInstance.customProviderInstanceName);
       DomainDI.initDependencies(appLocator);
       NavigationDI.initDependencies(appLocator);
     },

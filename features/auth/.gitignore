@@ -1,0 +1,14 @@
+/.metadata
+/analysis_options.yaml
+/firebase.json
+/test/
+/ios/
+/.idea/
+.flutter-plugins
+.flutter-plugins-dependencies
+pubspec.lock
+*.freezed.dart
+*.g.dart
+firebase_options.dart
+.dart_tool/
+
