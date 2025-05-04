@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:navigation/navigation.dart';
 
-import '../auth_bloc/auth_bloc.dart';
+
+import '../auth_bloc/auth_cubit.dart';
 
 // TODO(): Change UI according to your requirements
 class SignUpScreenContent extends StatefulWidget {
@@ -12,7 +14,7 @@ class SignUpScreenContent extends StatefulWidget {
 }
 
 class _SignUpScreenContentState extends State<SignUpScreenContent> {
-  late final AuthBloc _bloc;
+  late final AuthCubit _cubit;
   final TextEditingController _emailTextEditingController = TextEditingController();
   final TextEditingController _passwordTextEditingController = TextEditingController();
   bool _obscurePassword = true;
@@ -20,7 +22,7 @@ class _SignUpScreenContentState extends State<SignUpScreenContent> {
   @override
   void initState() {
     super.initState();
-    _bloc = context.read<AuthBloc>();
+    _cubit = context.read<AuthCubit>();
   }
 
   @override
@@ -29,8 +31,8 @@ class _SignUpScreenContentState extends State<SignUpScreenContent> {
       appBar: AppBar(title: const Text('Sign up')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: BlocBuilder<AuthBloc, AuthState>(
-          bloc: _bloc,
+        child: BlocBuilder<AuthCubit, AuthState>(
+          bloc: _cubit,
           builder: (BuildContext context, AuthState state) {
             if (state.isLoading) {
               return const Center(child: CircularProgressIndicator());
@@ -67,12 +69,10 @@ class _SignUpScreenContentState extends State<SignUpScreenContent> {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () => _bloc.add(
-                      SignUpWithCredentials(
+                    onPressed: () => _cubit.onSignUpWithCredentials(
                         login: _emailTextEditingController.text,
                         password: _passwordTextEditingController.text,
                       ),
-                    ),
                     child: const Text('Create account'),
                   ),
                   const SizedBox(height: 16),
@@ -81,7 +81,7 @@ class _SignUpScreenContentState extends State<SignUpScreenContent> {
                     children: [
                       const Text("Already have an account?"),
                       TextButton(
-                          onPressed: () => _bloc.add(NavigateToLogin()),
+                          onPressed: () => _cubit.onNavigateToSignIn(), 
                           child: const Text('Login')),
                     ],
                   ),

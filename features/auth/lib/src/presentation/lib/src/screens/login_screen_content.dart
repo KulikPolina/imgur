@@ -1,10 +1,9 @@
-import 'package:auth/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:navigation/navigation.dart';
 
-import '../auth_bloc/auth_bloc.dart';
+import '../auth_bloc/auth_cubit.dart';
 
-// TODO(): Change UI according to your requirements
 class LoginScreenContent extends StatefulWidget {
   const LoginScreenContent({super.key});
 
@@ -13,7 +12,7 @@ class LoginScreenContent extends StatefulWidget {
 }
 
 class _LoginScreenContentState extends State<LoginScreenContent> {
-  late final AuthBloc _bloc;
+  late final AuthCubit _cubit;
   final TextEditingController _emailTextEditingController = TextEditingController();
   final TextEditingController _passwordTextEditingController = TextEditingController();
   bool _obscurePassword = true;
@@ -21,7 +20,7 @@ class _LoginScreenContentState extends State<LoginScreenContent> {
   @override
   void initState() {
     super.initState();
-    _bloc = context.read<AuthBloc>();
+    _cubit = context.read<AuthCubit>();
   }
 
   @override
@@ -30,8 +29,9 @@ class _LoginScreenContentState extends State<LoginScreenContent> {
       appBar: AppBar(title: const Text('Login')),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: BlocBuilder<AuthBloc, AuthState>(
-          bloc: _bloc,
+        
+        child: BlocBuilder<AuthCubit, AuthState>(
+          bloc: _cubit,
           builder: (BuildContext context, AuthState state) {
             if (state.isLoading) {
               return const Center(
@@ -70,12 +70,10 @@ class _LoginScreenContentState extends State<LoginScreenContent> {
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
-                    onPressed: () => _bloc.add(
-                      SignInWithCredentials(
+                    onPressed: () => _cubit.onSignInWithCredentials(
                         login: _emailTextEditingController.text,
                         password: _passwordTextEditingController.text,
                       ),
-                    ),
                     child: const Text('Login'),
                   ),
                   const SizedBox(height: 16),
@@ -84,7 +82,7 @@ class _LoginScreenContentState extends State<LoginScreenContent> {
                     children: [
                       const Text("Don't have an account?"),
                       TextButton(
-                        onPressed: () => _bloc.add(NavigateToSignUp()),
+                        onPressed: () => _cubit.onNavigateToSignUp(),
                         child: const Text('Sign up'),
                       ),
                     ],
