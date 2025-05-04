@@ -1,4 +1,4 @@
-part of 'auth_bloc.dart';
+part of 'auth_cubit.dart';
 
 class AuthState {
   final UserModel? currentUser;
