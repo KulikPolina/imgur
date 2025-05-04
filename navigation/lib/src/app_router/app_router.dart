@@ -23,7 +23,6 @@ class AppRouter extends _$AppRouter {
   @override
   List<AutoRoute> get routes => <AutoRoute>[
         AutoRoute(
-          initial: true,
           page: MainRoute.page,
           children: <AutoRoute>[
             AutoRoute(
@@ -42,6 +41,7 @@ class AppRouter extends _$AppRouter {
           page: SearchImagesRoute.page,
         ),
         AutoRoute(
+          initial: true,
           page: LoginScreen.page,
         ),
         AutoRoute(
