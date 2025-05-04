@@ -22,86 +22,122 @@ class AuthCubit extends Cubit<AuthState> {
     this._getCurrentUserUseCase,
   ) : super(const AuthState.initial());
 
-  Future<void> signUpWithCredentials(String login, String password) async {
-    if (!_isCredentialsValid(login: login, password: password)) return;
-
-    emit(state.copyWith(isLoading: true));
-
-    try {
-      final UserModel? user = await _signUpWithCredentialsUseCase.execute(
-        SignUpPayloadModel(login: login, password: password),
-      );
-      emit(state.copyWith(currentUser: user));
-      if (user != null) {
-        debugPrint('User signed up event occurred!');
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    } finally {
-      emit(state.copyWith(isLoading: false));
-    }
-  }
-
-  Future<void> signInWithSessionId() async {
-    try {
-      final UserModel? user =
-          await _authoriseWithSessionIdUseCase.execute(const NoParams());
-      emit(state.copyWith(currentUser: user));
-      if (user != null) {
-        debugPrint('User logged via sessionId event occurred!');
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
-
-  Future<void> signInWithCredentials(String login, String password) async {
-    //if (!_isCredentialsValid(login: login, password: password)) return;
-
-    if (login != 'admin' || password != '1111') {
-      emit(state.copyWith(isLoginInvalid: true, isPasswordInvalid: true));
+Future<void> onSignUpWithCredentials(
+      {required String login, required String password}) async {
+    if (!_isCredentialsValid(
+      login: login,
+      password: password,
+    )) {
+      // TODO():  Add unsupported formatting handling
       return;
     }
 
     emit(state.copyWith(isLoading: true));
 
     try {
-      final UserModel? user = await _authoriseWithCredentialsUseCase.execute(
-        SignInPayloadModel(login: login, password: password),
+      final UserModel? createdUser =
+          await _signUpWithCredentialsUseCase.execute(
+        SignUpPayloadModel(
+          login: login,
+          password: password,
+        ),
       );
-      emit(state.copyWith(currentUser: user));
-      if (user != null) {
-        debugPrint('User logged in event occurred!');
+      emit(state.copyWith(currentUser: createdUser));
+
+      if (createdUser != null) {
+        // TODO():  Add some conditional redirection on successfully signed up logic
+        await _appRouter.replace(const LoginScreen());
+        debugPrint('User signed up event occurred!');
       }
-    } catch (e) {
+    } on Exception catch (e) {
+      // TODO(): Add exception handling
       debugPrint(e.toString());
     } finally {
       emit(state.copyWith(isLoading: false));
     }
   }
 
-  Future<void> signOut() async {
-    await _signOutUseCase.execute(const NoParams());
-    emit(state.copyWith(currentUser: null));
-  }
-
-  Future<void> getCurrentUser() async {
+  Future<void> onSignInWithSessionId() async {
     try {
       final UserModel? user =
-          await _getCurrentUserUseCase.execute(const NoParams());
+          await _authoriseWithSessionIdUseCase.execute(const NoParams());
+
       emit(state.copyWith(currentUser: user));
-    } catch (e) {
+
+      if (user != null) {
+        await _appRouter.push(const MainRoute());
+        debugPrint('User logged via sessionId event occurred!');
+      }
+    } on Exception catch (e) {
+      // TODO(): Add exception handling
       debugPrint(e.toString());
     }
   }
 
-  void navigateToLogin() {
-    // Implement navigation logic here
+    Future<void> onSignInWithCredentials(
+      {required String login, required String password}) async {
+    if (!_isCredentialsValid(
+      login: login,
+      password: password,
+    )) {
+      // TODO():  Add unsupported formatting handling
+      return;
+    }
+
+    emit(state.copyWith(isLoading: true));
+
+    try {
+      // final UserModel? userModel =
+      //     await _authoriseWithCredentialsUseCase.execute(
+      //   SignInPayloadModel(
+      //     login: login,
+      //     password: password,
+      //   ),
+      // );
+      final UserModel userModel = UserModel(login: login);
+
+      emit(state.copyWith(currentUser: userModel));
+
+      // if (userModel != null) {
+      //   await _appRouter.push(const MainRoute());
+      //   debugPrint('User logged in event occurred!');
+      // }
+      await _appRouter.push(const MainRoute());
+      debugPrint('User logged in event occurred!');
+    } on Exception catch (e) {
+      // TODO(): Add exception handling
+      debugPrint(e.toString());
+    } finally {
+      emit(state.copyWith(isLoading: false));
+    }
   }
 
-  void navigateToSignUp() {
+ Future<void> onSignOut() async {
+    await _signOutUseCase.execute(const NoParams());
+
+    emit(state.copyWith(currentUser: null));
+  }
+
+  Future<void> onGetCurrentUser() async {
+    try {
+      final UserModel? currentUser =
+          await _getCurrentUserUseCase.execute(const NoParams());
+
+      emit(state.copyWith(currentUser: currentUser));
+    } on Exception catch (e) {
+      // TODO(): Add exception handling
+      debugPrint(e.toString());
+    }
+  }
+
+  void onNavigateToSignIn() {
+    _appRouter.replace(const LoginScreen());
+  }
+
+  void onNavigateToSignUp() {
+    // redirection to sign up screen logic
+    _appRouter.replace(const SignUpScreen());
     debugPrint('Navigated to sign up triggered');
-    // Implement navigation logic here
   }
 
 // TODO(): Add your own validation condition
@@ -109,28 +145,36 @@ class AuthCubit extends Cubit<AuthState> {
     required String login,
     required String password,
   }) {
-    //final bool isLoginValid = _isLoginValid(login);
-    //final bool isPasswordValid = _isPasswordValid(password);
+    if (!_isLoginValid(login)) {
+      emit(state.copyWith(isLoginInvalid: true));
+      return false;
+    }
 
-    final bool isLoginValid = login == 'admin';
-    final bool isPasswordValid = password == '1111';
+    if (!_isPasswordValid(password)) {
+      emit(state.copyWith(isPasswordInvalid: true));
+      return false;
+    }
 
-    emit(state.copyWith(
-      isLoginInvalid: !isLoginValid,
-      isPasswordInvalid: !isPasswordValid,
-    ));
+    emit(
+      state.copyWith(
+        isLoginInvalid: false,
+        isPasswordInvalid: false,
+      ),
+    );
 
-    return isLoginValid && isPasswordValid;
+    return true;
   }
 
 // TODO(): Add your own validation condition
   bool _isLoginValid(String email) {
-    return RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+    return RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email);
   }
 
 // TODO(): Add your own validation condition
   bool _isPasswordValid(String password) {
-    return password.length >= 8 && password.length <= 20;
+    if (password.length < 8 || password.length > 20) return false;
+    return true;
   }
 }
