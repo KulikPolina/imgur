@@ -48,7 +48,7 @@ class AppErrorHandlerBloc extends Bloc<AppErrorHandlerEvent, AppErrorHandlerStat
     switch (event.data) {
       case UnauthorizedEvent():
       // TODO: Handle UnauthorizedEvent
-      default:
+      //default:
     }
   }
 
