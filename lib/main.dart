@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:navigation/navigation.dart';
 
 import 'error_handler/provider/app_error_handler_provider.dart';
-  
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
