@@ -9,8 +9,6 @@ abstract class AuthorizationProvider {
     required SignInPayloadEntity signInPayloadEntity,
   });
 
-  Future<UserEntity?> signInWithSessionId();
-
   Future<void> signOut();
 
   Future<UserEntity?> getCurrentUser();

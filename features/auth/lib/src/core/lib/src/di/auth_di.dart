@@ -59,11 +59,6 @@ class AuthDI {
       ),
     );
 
-    locator.registerLazySingleton<SignInWithSessionIdUseCase>(
-      () => SignInWithSessionIdUseCase(
-        authRepository: locator.get<AuthorizationRepository>(),
-      ),
-    );
 
     locator.registerLazySingleton<SignOutUseCase>(
       () => SignOutUseCase(

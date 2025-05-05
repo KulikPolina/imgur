@@ -37,7 +37,7 @@ class AppErrorHandlerBloc extends Bloc<AppErrorHandlerEvent, AppErrorHandlerStat
     switch (event.data) {
       case InternetConnectionLostEvent():
       // TODO: Handle InternetConnectionLostEvent
-      default:
+      //default:
     }
   }
 

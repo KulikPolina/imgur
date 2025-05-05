@@ -8,16 +8,12 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final AppRouter _appRouter;
   final SignUpWithCredentialsUseCase _signUpWithCredentialsUseCase;
-  final SignInWithSessionIdUseCase _authoriseWithSessionIdUseCase;
-  final SignInWithCredentialsUseCase _authoriseWithCredentialsUseCase;
   final SignOutUseCase _signOutUseCase;
   final GetCurrentUserUsecase _getCurrentUserUseCase;
 
   AuthCubit(
     this._appRouter,
     this._signUpWithCredentialsUseCase,
-    this._authoriseWithSessionIdUseCase,
-    this._authoriseWithCredentialsUseCase,
     this._signOutUseCase,
     this._getCurrentUserUseCase,
   ) : super(const AuthState.initial());
@@ -45,7 +41,6 @@ Future<void> onSignUpWithCredentials(
       emit(state.copyWith(currentUser: createdUser));
 
       if (createdUser != null) {
-        // TODO():  Add some conditional redirection on successfully signed up logic
         await _appRouter.replace(const LoginScreen());
         debugPrint('User signed up event occurred!');
       }
@@ -54,23 +49,6 @@ Future<void> onSignUpWithCredentials(
       debugPrint(e.toString());
     } finally {
       emit(state.copyWith(isLoading: false));
-    }
-  }
-
-  Future<void> onSignInWithSessionId() async {
-    try {
-      final UserModel? user =
-          await _authoriseWithSessionIdUseCase.execute(const NoParams());
-
-      emit(state.copyWith(currentUser: user));
-
-      if (user != null) {
-        await _appRouter.push(const MainRoute());
-        debugPrint('User logged via sessionId event occurred!');
-      }
-    } on Exception catch (e) {
-      // TODO(): Add exception handling
-      debugPrint(e.toString());
     }
   }
 
@@ -87,22 +65,12 @@ Future<void> onSignUpWithCredentials(
     emit(state.copyWith(isLoading: true));
 
     try {
-      // final UserModel? userModel =
-      //     await _authoriseWithCredentialsUseCase.execute(
-      //   SignInPayloadModel(
-      //     login: login,
-      //     password: password,
-      //   ),
-      // );
+
       final UserModel userModel = UserModel(login: login);
 
       emit(state.copyWith(currentUser: userModel));
 
-      // if (userModel != null) {
-      //   await _appRouter.push(const MainRoute());
-      //   debugPrint('User logged in event occurred!');
-      // }
-      await _appRouter.push(const MainRoute());
+      await _appRouter.replace(const MainRoute());
       debugPrint('User logged in event occurred!');
     } on Exception catch (e) {
       // TODO(): Add exception handling

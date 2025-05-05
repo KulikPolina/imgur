@@ -37,14 +37,6 @@ class AuthorizationRepositoryImpl implements AuthorizationRepository {
 
     return UserMapper.fromEntity(userEntity);
   }
-
-  @override
-  Future<UserModel?> signInWithSessionId() async {
-    final UserEntity? userEntity = await _authProvider.signInWithSessionId();
-
-    return UserMapper.fromEntity(userEntity);
-  }
-
   @override
   Future<void> signOut() async => await _authProvider.signOut();
 }

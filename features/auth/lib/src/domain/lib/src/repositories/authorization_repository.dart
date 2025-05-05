@@ -9,8 +9,6 @@ abstract class AuthorizationRepository {
     required SignInPayloadModel signInPayloadModel,
   });
 
-  Future<UserModel?> signInWithSessionId();
-
   Future<void> signOut();
 
   Future<UserModel?> getCurrentUser();

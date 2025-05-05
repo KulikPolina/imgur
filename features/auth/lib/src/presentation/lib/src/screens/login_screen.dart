@@ -18,8 +18,6 @@ class LoginScreen extends StatelessWidget {
         appLocator.get(),
         appLocator.get(),
         appLocator.get(),
-        appLocator.get(),
-        appLocator.get(),
       ),
       child: const LoginScreenContent(),
     );

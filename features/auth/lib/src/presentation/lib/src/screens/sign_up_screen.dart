@@ -18,8 +18,6 @@ class SignUpScreen extends StatelessWidget {
         appLocator.get(),
         appLocator.get(),
         appLocator.get(),
-        appLocator.get(),
-        appLocator.get(),
       ),
       child: const SignUpScreenContent(),
     );
